@@ -24,27 +24,25 @@ An existing project that we would like to learn from would be the Proximity to C
 
 
 
-Timeline
-Week 8
-February 26 - Code in basemap
-February 26 - Code in commenting functions
-February 27- Start Google Slides document for presentation
-February 28-  Code in hovering function
-February 29- Update readme and github
-March 1- Code in clicking function
-March 1- Test commenting function
-March 1- Go to section to meet with Liz and discuss project
+#### Timeline
+*Week 8*
+* February 26 - Code in basemap
+* February 26 - Code in commenting functions
+* February 27- Start Google Slides document for presentation
+* February 28-  Code in hovering function
+* February 29- Update readme and github
+* March 1- Code in clicking function
+* March 1- Test commenting function
+* March 1- Go to section to meet with Liz and discuss project
 
+*Week 9*
+* March 5- Create mock comments on the map
+* March 5- Finish the map
+* March 5- Deploy on Heroku
+* March 5- Meet with Liz to discuss project
+* March 6- Update readme and github
+* March 6-7- Finalize presentation slides
+* March 8- Present project
 
-Week 9
-
-March 5- Create mock comments on the map
-March 5- Finish the map
-March 5- Deploy on Heroku
-March 5- Meet with Liz to discuss project
-March 6- Update readme and github
-March 6-7- Finalize presentation slides
-March 8- Present project
-
-Week 10 
-March 11- Project submitted
+*Week 10*
+* March 11- Project submitted

@@ -20,7 +20,7 @@ The multimedia we will be using will be used in the info sidebar feature. Here, 
 (https://www.seattle.gov/util/cs/groups/public/@spu/@drainsew/documents/webcontent/01_009970.pdf)
 
 #### Inspiration
-* An existing project that we would like to learn from would be the Proximity to Combined Sewer Overflow-Impacted Waters in Philadelphia: A Geographic Information Systems Study to Explore Environmental Injustice | Environmental Justice project. This project uses GIS methods to study the inequitable exposure to environmental hazards, such as to landfills and highways to compare and contrast populations living near CSO-impacted waters and those living near non impacted waters in Philadelphia by race, ethnicity, and socioeconomic variables. This project is important because this could offer us a method in studying the POCs exposed in the CSO area.
+An existing project that we would like to learn from would be the Proximity to Combined Sewer Overflow-Impacted Waters in Philadelphia: A Geographic Information Systems Study to Explore Environmental Injustice | Environmental Justice project. This project uses GIS methods to study the inequitable exposure to environmental hazards, such as to landfills and highways to compare and contrast populations living near CSO-impacted waters and those living near non impacted waters in Philadelphia by race, ethnicity, and socioeconomic variables. This project is important because this could offer us a method in studying the POCs exposed in the CSO area.
 
 
 

@@ -343,27 +343,30 @@
             document.getElementById('add').style.display = 'block';
         }
 
+        const poc_popup = new maplibregl.Popup({
+        });
 
-        // Show popup on mouse enter over an existing point
-        map.on('mouseenter', 'placesLayer', function (e) {
+        map.on('mousemove', 'race-layer', function (e) {
             map.getCanvas().style.cursor = 'pointer';
 
-            var coordinates = e.features[0].geometry.coordinates;
-            var content = e.features[0].properties.content;
-            var contributor = e.features[0].properties.contributor;
+            var tract = e.features[0];
+            var poc_perc = (100 * (tract.properties.POC_TOTAL / tract.properties.TOTAL_POP));
+            var rounded_poc_perc = poc_perc.toFixed(2); 
+            var census_name = tract.properties.NAME
 
-            popup = new maplibregl.Popup()
-                .setLngLat(coordinates)
-                .setHTML("<p><b>" + contributor + "</b> <i>said:</i> " + content + "</p>")
+    
+            poc_popup.setLngLat(e.lngLat)
+                .setHTML(
+                    "<p>" + census_name + "</p>" +
+                    "<p>" + "POC percentage: " + rounded_poc_perc + "%" + "</p>")
                 .addTo(map);
         });
 
-        // Remove popup on mouse leave from an existing point
-        map.on('mouseleave', 'placesLayer', function () {
+        map.on('mouseleave', 'race-layer', function () {
             map.getCanvas().style.cursor = '';
-            popup.remove();
+            // Remove the popup when the mouse leaves the feature
+            poc_popup.remove();
         });
-
 
 
         // Function to handle the submission of a new record

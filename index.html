@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Race and Overflow in Seattle, Washington</title>
+    <script src="https://unpkg.com/maplibre-gl@3.1.0/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@3.1.0/dist/maplibre-gl.css" rel="stylesheet" />
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js"></script>
+    <!-- Styles for the map and popup -->
+    <style>
+        /* Basic CSS for the page */
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+        
+        #info {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 350px;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: Helvetica, Helvetica, sans-serif;
+            font-size: 20px;
+            line-height: 1.5;
+            color: #000000;
+            z-index: 1;
+        }
+        
+        #name {
+            width: 100%;
+            height: 20px;
+            margin-bottom: 10px;
+        }
+
+        #content {
+            width: 100%;
+            height: 45px;
+            margin-bottom: 10px;
+        }
+
+        #share {
+            float: right;
+        }
+
+        .overlay-trigger.overlay-trigger--add {
+            right: 0.25em;
+            top: 0.25em;
+        }
+        .overlay-trigger {
+            border: none;
+            background-color: transparent;
+            padding: 0;
+            top: 0;
+            font-size: 2.4em;
+            cursor: pointer;
+            font-weight: 700;
+            position: fixed;
+            z-index: 5;
+            color: #1a1a1a;
+        }
+
+        .overlay-trigger__icon {
+            width: 75px;
+            height: 75px; 
+        }
+
+        .overlay.overlay--visible {
+            width: 100%;
+        }
+
+        .overlay.overlay--active {
+            transition-property: width;
+            transition-duration: 300ms;
+            transition-timing-function: ease;
+            display: block;
+        }
+
+        .overlay.overlay--add {
+            top: 40%;
+            height: 60%;
+        }
+
+        #overlay {
+        position: fixed;
+        top: 0;
+        right: -300px; /* Start offscreen */
+        width: 300px;
+        height: 100%;
+        background-color: #9C95C5;
+        opacity: 0.75;
+        font-family: Helvetica, Helvetica, sans-serif;
+        font-size: 20px;
+        transition: right 0.3s ease;
+        overflow-y: auto;
+        }
+
+        #overlayContent {
+        padding: 20px;
+        color: white;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+  
+    </style>
+</head>
+
+<body>
+    <!-- Map container -->
+    <div id="map"></div>
+    
+    <!-- Information box -->
+    <div id="info">
+        <h3>Race and Overflow in Seattle, Washington</h3>
+        <h4>Group AB3 | Mykenzie Hirata, Lizeth Velderrain-Lopez, & Katelyn Saechao</h4>
+
+    </div>
+    
+    <!-- Add comment button -->
+    <button class="overlay-trigger overlay-trigger--add" id="add" aria-label="open add overlay" onclick="showOverlay(this)">
+        <img class="overlay-trigger__icon" src="img/plus.png" alt="add">
+        </button>
+
+    <!-- Add comment overlay fields -->
+    <div id="overlay">
+        <button class="close-button" onclick="hideOverlay()">X</button>
+        <div id="overlayContent">
+          <h2>How to contribute to the map</h2>
+          <p>1. Click on the location of your experience.</p>
+          <p>2. Share your experience and thoughts in the text box below.</p>
+          <p>3. Click the ‘Share’ button.</p>
+          <div id= "fields"><input type="text" id="name" placeholder="Input your name here..."><input type="text" id="content" placeholder="Input your message here..."><button id="share">Share</button></div>
+        </div>
+      </div>
+    
+
+    <!-- JavaScript code for the interactive map and data submission -->
+    <script>
+        // Variable to hold the popup instance
+        let popup = null;
+        
+        // GeoJSON data object to store the contributed points
+        let geojson = {
+            'type': 'FeatureCollection',
+            'features': []
+        };
+        
+        // Create a new map instance
+        mapboxgl.accessToken =
+            'pk.eyJ1IjoiamFrb2J6aGFvIiwiYSI6ImNpcms2YWsyMzAwMmtmbG5icTFxZ3ZkdncifQ.P9MBej1xacybKcDN_jehvw';
+        let map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/light-v10',
+            zoom: 10.3,
+            minZoom: 3,
+            center: [-122.3, 47.62],
+        });
+    
+
+        const grades = [5, 15, 20, 40],
+        colors = ['rgb(255, 207, 76)', 'rgb(120, 198, 121)', 'rgb(1, 108, 89)', 'rgb(0, 104, 55)'],
+        radii = [5, 15, 20, 25];
+        
+        async function geojsonFetch() { 
+            let response = await fetch('assets/poc-data.geojson');
+            let pocdata = await response.json();
+            map.on('load', function loadingData() {
+
+                map.addSource('cso-basins', {
+                    type: 'geojson',
+                    data: 'assets/cso-basins.geojson'
+                });
+
+                map.addSource('cso-point', {
+                    type: 'geojson',
+                    data: 'assets/centroid-coord.geojson'
+                });
+
+                map.addSource('race-data', {
+                    type: 'geojson',
+                    data: pocdata
+                });
+
+                
+                map.addLayer({
+                    'id': 'race-layer',
+                    'type': 'fill',
+                    'source': 'race-data',
+                    'paint': {
+                        'fill-color': [
+                            'step',
+                            ['get', 'POC_TOTAL'],
+                            '#f2f0f7',
+                            500,
+                            '#dadaeb',
+                            1000,
+                            '#bcbddc',
+                            1500,
+                            '#9e9ac8',
+                            2000,
+                            '#756bb1',
+                            2500,
+                            '#54278f'
+                        ],
+                        'fill-outline-color': '#969696',
+                        'fill-opacity': 0.7,
+                    }
+                });
+
+                map.addLayer({
+                    'id': 'cso-basin-layer',
+                    'type': 'fill',
+                    'paint' : {
+                        'fill-color': '#6FAED8',
+                        'fill-outline-color': '#ffffff',
+                        'fill-opacity': 0.7,
+                    },
+                    'source': 'cso-basins',
+                });
+
+                map.addLayer({
+                    'id': 'cso-location',
+                    'type': 'circle',
+                    'source': 'cso-point',
+                    'minzoom': 2,
+                    'paint': {
+                        'circle-radius': {
+                            'property': "CSOB_OVRFLW_VOL_MGAL_YR_NBR",
+                            'stops': [
+                                [grades[0], radii[0]],
+                                [grades[1], radii[1]],
+                                [grades[2], radii[2]],
+                                [grades[3], radii[3]]
+                            ]
+                        },
+                        'circle-color': {
+                            'property': "CSOB_OVRFLW_VOL_MGAL_YR_NBR",
+                            'stops': [
+                                [grades[0], colors[0]],
+                                [grades[1], colors[1]],
+                                [grades[2], colors[2]],
+                                [grades[3], colors[3]]
+                            ]
+                        },
+                        'circle-stroke-color': '#878C97',
+                        'circle-stroke-width': 1.5,
+                        'circle-opacity': 0.75
+                    }
+                });
+
+            });
+        }
+        geojsonFetch();
+
+        // Fetch existing records when the window is loaded
+        window.addEventListener("load", async function () {
+            let response = await fetch('https://pmap-28a9a9408e2b.herokuapp.com/api/get-record', {
+                method: 'GET'
+            });
+
+            let data = await response.json();
+      
+            // Iterate through the fetched records and add them to the GeoJSON data object
+            for (let i = 0; i < data.rows.length; i++) {
+                geojson.features.push({
+                    'type': 'Feature',
+                    'properties': {
+                        'contributor': data.rows[i].contributor,
+                        'content': data.rows[i].content,
+                    },
+                    'geometry': {
+                        'type': 'Point',
+                        'coordinates': [data.rows[i].lng, data.rows[i].lat]
+                    }
+                });
+            }
+        });
+
+        // After the map loads, add the GeoJSON source and layer for existing points
+        map.on("load", function () {
+            map.addSource('places', {
+                'type': 'geojson',
+                'data': geojson
+            });
+
+            map.addLayer({
+                'id': 'placesLayer',
+                'type': 'circle',
+                'source': 'places',
+                'paint': {
+                    'circle-radius': 6,
+                    'circle-color': '#B42222'
+                }
+            });
+
+            // makes markers when any place on the map is clicked
+            let marker = null; 
+
+
+
+            map.on('click', function(e) {
+                // if there was already a marker on the map, it will remove the previous marker
+                // and plot a new one
+                if (marker) {
+                    marker.remove();
+                }
+
+                marker = new mapboxgl.Marker()
+                    .setLngLat(e.lngLat)
+                    .addTo(map);
+
+            });
+    
+        });
+
+ 
+        document.getElementById("add").addEventListener("click", function() {
+            document.getElementById("overlay").style.right = "0";
+        });
+
+
+        function showOverlay(button) {
+            button.style.display = 'none';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function hideOverlay() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('add').style.display = 'block';
+        }
+
+
+        // Show popup on mouse enter over an existing point
+        map.on('mouseenter', 'placesLayer', function (e) {
+            map.getCanvas().style.cursor = 'pointer';
+
+            var coordinates = e.features[0].geometry.coordinates;
+            var content = e.features[0].properties.content;
+            var contributor = e.features[0].properties.contributor;
+
+            popup = new maplibregl.Popup()
+                .setLngLat(coordinates)
+                .setHTML("<p><b>" + contributor + "</b> <i>said:</i> " + content + "</p>")
+                .addTo(map);
+        });
+
+        // Remove popup on mouse leave from an existing point
+        map.on('mouseleave', 'placesLayer', function () {
+            map.getCanvas().style.cursor = '';
+            popup.remove();
+        });
+
+
+
+        // Function to handle the submission of a new record
+        async function shareNewRecord() {
+            let contributor = document.getElementById('name').value;
+            let content = document.getElementById('content').value;
+            let lngLat = popup.getLngLat();
+
+            // Create a new URLSearchParams object and append the data to it
+            let newRecord = new URLSearchParams();
+            newRecord.append('contributor', contributor);
+            newRecord.append('content', content);
+            newRecord.append('lng', lngLat.lng);
+            newRecord.append('lat', lngLat.lat);
+
+            // Set the POST request settings
+            let settings = {
+                method: 'POST',
+                body: newRecord
+            }
+
+            try {
+                // Send the POST request to add the new record
+                await fetch('https://pmap-28a9a9408e2b.herokuapp.com/api/add-record', settings);
+            } catch (err) {
+                // Handle any errors that occur during the request
+                console.error(err);
+            } finally {
+                // Remove the popup and update the GeoJSON data with the new point
+                popup.remove();
+                geojson.features.push({
+                    'type': 'Feature',
+                    'properties': {
+                        'contributor': contributor,
+                        'content': content,
+                    },
+                    'geometry': {
+                        'type': 'Point',
+                        'coordinates': [lngLat.lng, lngLat.lat]
+                    }
+                });
+                map.getSource('places').setData(geojson);
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>

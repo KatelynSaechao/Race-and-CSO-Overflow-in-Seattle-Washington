@@ -25,9 +25,8 @@
         #info {
             position: absolute;
             top: 0;
-            left: 0;
+            left: 20px;
             width: 350px;
-            padding: 10px;
             border-radius: 5px;
             font-family: Helvetica, Helvetica, sans-serif;
             font-size: 20px;
@@ -115,16 +114,31 @@
             right: 10px;
             cursor: pointer;
             background-color: transparent;
+            color:#ffffff;
             border: none;
         }
+
+        #toggle-menu {
+            background: #fff;
+            position: absolute;
+            bottom: 40px;
+            left: 20px;
+            border-radius: 3px;
+            width: 140px;
+            height: 160px;
+            border: 1px solid rgba(0, 0, 0, 0.4);
+            font-family: 'Open Sans', sans-serif;
+            text-align: center;
+        }
+
 
         /* the style of the layer control menu */
         #menu {
             background: #fff;
             position: absolute;
             z-index: 1;
-            bottom: 40px;
-            left: 20px;
+            bottom: 50px;
+            left: 30px;
             border-radius: 3px;
             width: 120px;
             border: 1px solid rgba(0, 0, 0, 0.4);
@@ -174,8 +188,8 @@
     <div id="map"></div>
 
     <!-- Map layer toggle -->
-    <div id="menu">
-    </div>
+    <div id="toggle-menu"><p><b>Toggle Layers</b></p></div>
+    <div id="menu"></div>
     
     <!-- Information box -->
     <div id="info">
@@ -391,7 +405,10 @@
             }
         });
    
-    
+        const nav = new mapboxgl.NavigationControl({
+            showZoom: true, showCompass: false
+        });
+        map.addControl(nav, 'bottom-right');
 
         // Fetch existing records when the window is loaded
         window.addEventListener("load", async function () {
@@ -491,6 +508,92 @@
             map.getCanvas().style.cursor = '';
             // Remove the popup when the mouse leaves the feature
             poc_popup.remove();
+        });
+
+        const basin_popup = new maplibregl.Popup({
+        });
+
+        map.on('mousemove', 'CSO Basin', function (e) {
+            map.getCanvas().style.cursor = 'pointer';
+
+            var basin = e.features[0];
+            var basin_loc = basin.properties.CSOB_OUTFALL_LOC_TEXT;
+            var basin_acre = basin.properties.CSOB_AREA_ACRE_NBR;
+            var rounded_acre= basin_acre.toFixed(3);
+
+    
+            basin_popup.setLngLat(e.lngLat)
+                .setHTML(
+                    "<p>" + "CSO Basin Outflow Location: " + basin_loc + "</p>" +
+                    "<p>" + "Acres: " + rounded_acre + "</p>")
+                .addTo(map);
+        });
+
+        map.on('mouseleave', 'CSO Basin', function () {
+            map.getCanvas().style.cursor = '';
+            // Remove the popup when the mouse leaves the feature
+            basin_popup.remove();
+        });
+
+        const overflow_popup = new maplibregl.Popup({
+        });
+
+        map.on('mousemove', 'CSO Points', function (e) {
+            map.getCanvas().style.cursor = 'pointer';
+
+            var overflow = e.features[0];
+            var overflow_loc = overflow.properties.CSOB_OUTFALL_LOC_TEXT;
+            var overflow_vol = overflow.properties.CSOB_OVRFLW_VOL_MGAL_YR_NBR;
+            var overflow_freq = overflow.properties.CSOB_OVRFLW_YR_FRQ_NBR;
+
+            overflow_popup.setLngLat(e.lngLat)
+                .setHTML(
+                    "<p>" + "CSO Basin Outflow Location: " + overflow_loc + "</p>" +
+                    "<p>" + "Overflow Volume per Year: " + overflow_vol + "</p>" +
+                    "<p>" + "Overflow Frequency per Year: " + overflow_freq + "</p>")
+                .addTo(map);
+        });
+
+        map.on('mouseleave', 'CSO Points', function () {
+            map.getCanvas().style.cursor = '';
+            // Remove the popup when the mouse leaves the feature
+            overflow_popup.remove();
+        });
+
+        const poc_basin_popup = new maplibregl.Popup({
+        });
+
+        map.on('mousemove', function (e) {
+            map.getCanvas().style.cursor = 'pointer';
+
+            // Check if both 'POC' and 'CSO Basin' layers are visible
+            if (map.getLayoutProperty('POC', 'visibility') === 'visible' &&
+                map.getLayoutProperty('CSO Basin', 'visibility') === 'visible') {
+
+                var tract = e.features[0];
+                var poc_perc = (100 * (tract.properties.POC_TOTAL / tract.properties.TOTAL_POP));
+                var rounded_poc_perc = poc_perc.toFixed(2); 
+                var census_name = tract.properties.NAME
+                
+                var basin = e.features[0];
+                var basin_loc = basin.properties.CSOB_OUTFALL_LOC_TEXT;
+                var basin_acre = basin.properties.CSOB_AREA_ACRE_NBR;
+                var rounded_acre= basin_acre.toFixed(3);
+
+                poc_basin_popup.setLngLat(e.lngLat)
+                    .setHTML(
+                        "<p>" + census_name + "</p>" +
+                        "<p>" + "POC percentage: " + rounded_poc_perc + "%" + "</p>" +
+                        "<p>" + "CSO Basin Outflow Location: " + basin_loc + "</p>" +
+                        "<p>" + "Acres: " + rounded_acre + "</p>")
+                    .addTo(map);
+            }
+        });
+
+        map.on('mouseleave', function () {
+            map.getCanvas().style.cursor = '';
+            // Remove the popup when the mouse leaves the feature
+            poc_basin_popup.remove();
         });
 
 

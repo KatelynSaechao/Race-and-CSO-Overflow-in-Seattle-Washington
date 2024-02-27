@@ -25,7 +25,7 @@ The multimedia we will be using will be used in the info sidebar feature. Here, 
 An existing project that we would like to learn from would be the Proximity to Combined Sewer Overflow-Impacted Waters in Philadelphia: A Geographic Information Systems Study to Explore Environmental Injustice | Environmental Justice project. This project uses GIS methods to study the inequitable exposure to environmental hazards, such as to landfills and highways to compare and contrast populations living near CSO-impacted waters and those living near non impacted waters in Philadelphia by race, ethnicity, and socioeconomic variables. This project is important because this could offer us a method in studying the POCs exposed in the CSO area.
 
 ![Inspiration map](https://github.com/mykenzieh03/GEOG_458_Final_Project/blob/3e12a7f68c07fffc448142dfad2cd0aa89e352a4/img/inspirationmap.jpeg)
-
+![Race and Overflow in Seattle, WA](https://mykenzieh03.github.io/GEOG_458_Final_Project/)
 
 #### Timeline
 *Week 8*

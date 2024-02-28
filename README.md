@@ -27,6 +27,8 @@ An existing project that we would like to learn from would be the Proximity to C
 ![Inspiration map](https://github.com/mykenzieh03/GEOG_458_Final_Project/blob/3e12a7f68c07fffc448142dfad2cd0aa89e352a4/img/inspirationmap.jpeg)
 
 
+[Race and Overflow in Seattle, WA](https://mykenzieh03.github.io/GEOG_458_Final_Project/)
+
 #### Timeline
 *Week 8*
 * February 26 - Code in basemap

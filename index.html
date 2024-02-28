@@ -51,9 +51,87 @@
             float: right;
         }
 
+        .overlay-trigger--info {
+            right: 100px;
+            top: 30px;
+        }
+
+        
+        .overlay.overlay--info {
+            position: fixed;
+            top: 0;
+            right: -300px; /* Start offscreen */
+            width: 300px;
+            height: 100%;
+            background-color: #9C95C5;
+            opacity: 0.75;
+            font-family: Helvetica, Helvetica, sans-serif;
+            font-size: 20px;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+            z-index: 5;
+            color: white;
+            padding: 20px;
+        }
+
+        .overlay--info.active {
+            right: 0; /* Bring the overlay into view */
+        }
+
+        .overlay.overlay--info .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            background-color: transparent;
+            color: white;
+            border: none;
+        }
+
+        .overlay-trigger.overlay-trigger--info {
+            position: absolute;
+            right: 110px;
+            top: 30px;
+            z-index: 2; /* Ensure the button is above the overlay */
+            font-size: 25px;
+        }
+
+        .overlay.overlay--info {
+            position: fixed;
+            top: 0;
+            right: -400px; /* Start offscreen */
+            width: 300px;
+            height: 100%;
+            background-color: #9C95C5;
+            opacity: 0.75;
+            font-family: Helvetica, sans-serif;
+            font-size: 20px;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+            z-index: 1; /* Ensure the overlay is below the button */
+            color: white;
+            padding: 20px;
+        }
+
+        .overlay--info.active {
+            right: 0; /* Bring the overlay into view */
+        }
+
+        .overlay.overlay--info .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            background-color: transparent;
+            color: white;
+            border: none;
+            z-index: 3; /* Ensure the close button is above the overlay */
+        }
+
+
         .overlay-trigger.overlay-trigger--add {
-            right: 0.25em;
-            top: 0.25em;
+            right:10px;
+            top: 10px;
         }
         .overlay-trigger {
             border: none;
@@ -215,6 +293,19 @@
         </div>
       </div>
     
+    <!-- Add another overlay button -->
+    <button class="overlay-trigger overlay-trigger--info" id="anotherOverlay" aria-label="open another overlay" onclick="showInfoOverlay(this)">ABOUT/INFO</button>
+
+    <!-- Info/About overlay -->
+    <div id="infoOverlay" class="overlay overlay--info">
+        <button class="close-button" onclick="hideInfoOverlay()">X</button>
+        <div id="overlayContent">
+            <!-- Add your info content here -->
+            <h2>About/Info</h2>
+            <p>INSERT TEXT HERE. EXPLAIN PURPOSE OF MAP. LEGEND. CITATION</p>
+        </div>
+    </div>
+
 
     <!-- JavaScript code for the interactive map and data submission -->
     <script>
@@ -480,15 +571,43 @@
         });
 
 
+        let overlayVisible = false;
+
         function showOverlay(button) {
-            button.style.display = 'none';
-            document.getElementById('overlay').style.display = 'block';
+            if (!overlayVisible) {
+                document.getElementById('add').style.display = 'none';
+                document.getElementById('anotherOverlay').style.display = 'none';
+                document.getElementById('overlay').style.display = 'block';
+                overlayVisible = true;
+            }
         }
 
         function hideOverlay() {
             document.getElementById('overlay').style.display = 'none';
-            document.getElementById('add').style.display = 'block';
+            overlayVisible = false;
+            showButtons();
         }
+
+        function showInfoOverlay(button) {
+            if (!overlayVisible) {
+                document.getElementById('add').style.display = 'none';
+                document.getElementById('anotherOverlay').style.display = 'none';
+                document.getElementById('infoOverlay').classList.add('active');
+                overlayVisible = true;
+            }
+        }
+
+        function hideInfoOverlay() {
+            document.getElementById('infoOverlay').classList.remove('active');
+            overlayVisible = false;
+            showButtons();
+        }
+
+        function showButtons() {
+            document.getElementById('add').style.display = 'block';
+            document.getElementById('anotherOverlay').style.display = 'block';
+        }
+
 
         const poc_popup = new maplibregl.Popup({
         });

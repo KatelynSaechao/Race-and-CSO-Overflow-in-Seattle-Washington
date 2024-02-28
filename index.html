@@ -200,7 +200,7 @@
     
     <!-- Add comment button -->
     <button class="overlay-trigger overlay-trigger--add" id="add" aria-label="open add overlay" onclick="showOverlay(this)">
-        <img class="overlay-trigger__icon" src="img/plus.png" alt="add">
+        <img class="overlay-trigger__icon" src="img/add_comment_button.png" alt="add">
         </button>
 
     <!-- Add comment overlay fields -->
@@ -397,6 +397,9 @@
                             'visible'
                         );
                     }
+                    
+                    // Move placesLayer to the top after a toggle
+                    map.moveLayer('placesLayer');
                 };
 
                 // in the menu place holder, insert the layer links.
@@ -434,8 +437,28 @@
             }
         });
 
+
+        let marker = null;
+
+        map.on('click', function (e) {
+            if (marker) {
+                marker.remove();
+            }
+
+            marker = new mapboxgl.Marker()
+                .setLngLat(e.lngLat)
+                .addTo(map);
+
+        });
+
+
         // After the map loads, add the GeoJSON source and layer for existing points
         map.on("load", function () {
+            map.loadImage("https://raw.githubusercontent.com/mykenzieh03/GEOG_458_Final_Project/49b173c9a42bb37a4c9547c0d29938abfae3ce75/img/comment_marker.png", function (error, image) {
+                if (error) throw error;
+                map.addImage('custom-marker', image);
+            });
+
             map.addSource('places', {
                 'type': 'geojson',
                 'data': geojson
@@ -443,33 +466,15 @@
 
             map.addLayer({
                 'id': 'placesLayer',
-                'type': 'circle',
+                'type': 'symbol',
                 'source': 'places',
-                'paint': {
-                    'circle-radius': 6,
-                    'circle-color': '#B42222'
+                'layout': {
+                    'icon-image': 'custom-marker',
+                    'icon-size': 0.1
                 }
             });
-
-            // makes markers when any place on the map is clicked
-            let marker = null; 
- 
-            map.on('click', function(e) {
-                // if there was already a marker on the map, it will remove the previous marker
-                // and plot a new one
-                if (marker) {
-                    marker.remove();
-                }
-
-                marker = new mapboxgl.Marker()
-                    .setLngLat(e.lngLat)
-                    .addTo(map);
-
-            });
-    
         });
 
- 
         document.getElementById("add").addEventListener("click", function() {
             document.getElementById("overlay").style.right = "0";
         });
@@ -560,61 +565,45 @@
             overflow_popup.remove();
         });
 
-        const poc_basin_popup = new maplibregl.Popup({
-        });
-
-        map.on('mousemove', function (e) {
+         // Show popup on mouse enter over an existing point
+         map.on('mouseenter', 'placesLayer', function (e) {
             map.getCanvas().style.cursor = 'pointer';
 
-            // Check if both 'POC' and 'CSO Basin' layers are visible
-            if (map.getLayoutProperty('POC', 'visibility') === 'visible' &&
-                map.getLayoutProperty('CSO Basin', 'visibility') === 'visible') {
+            var coordinates = e.features[0].geometry.coordinates;
+            var content = e.features[0].properties.content;
+            var contributor = e.features[0].properties.contributor;
 
-                var tract = e.features[0];
-                var poc_perc = (100 * (tract.properties.POC_TOTAL / tract.properties.TOTAL_POP));
-                var rounded_poc_perc = poc_perc.toFixed(2); 
-                var census_name = tract.properties.NAME
-                
-                var basin = e.features[0];
-                var basin_loc = basin.properties.CSOB_OUTFALL_LOC_TEXT;
-                var basin_acre = basin.properties.CSOB_AREA_ACRE_NBR;
-                var rounded_acre= basin_acre.toFixed(3);
-
-                poc_basin_popup.setLngLat(e.lngLat)
-                    .setHTML(
-                        "<p>" + census_name + "</p>" +
-                        "<p>" + "POC percentage: " + rounded_poc_perc + "%" + "</p>" +
-                        "<p>" + "CSO Basin Outflow Location: " + basin_loc + "</p>" +
-                        "<p>" + "Acres: " + rounded_acre + "</p>")
-                    .addTo(map);
-            }
+            popup = new maplibregl.Popup()
+                .setLngLat(coordinates)
+                .setHTML("<p><b>" + contributor + "</b> <i>said:</i> " + content + "</p>")
+                .addTo(map);
         });
 
-        map.on('mouseleave', function () {
+        // Remove popup on mouse leave from an existing point
+        map.on('mouseleave', 'placesLayer', function () {
             map.getCanvas().style.cursor = '';
-            // Remove the popup when the mouse leaves the feature
-            poc_basin_popup.remove();
+            popup.remove();
         });
 
 
         // Function to handle the submission of a new record
-        async function shareNewRecord() {
+        async function shareNewRecord(markerLngLat) {
             let contributor = document.getElementById('name').value;
             let content = document.getElementById('content').value;
-            let lngLat = popup.getLngLat();
+            let lngLat = marker.getLngLat();
 
             // Create a new URLSearchParams object and append the data to it
             let newRecord = new URLSearchParams();
             newRecord.append('contributor', contributor);
             newRecord.append('content', content);
-            newRecord.append('lng', lngLat.lng);
-            newRecord.append('lat', lngLat.lat);
+            newRecord.append('lng', markerLngLat.lng);
+            newRecord.append('lat', markerLngLat.lat);
 
             // Set the POST request settings
             let settings = {
                 method: 'POST',
                 body: newRecord
-            }
+            };
 
             try {
                 // Send the POST request to add the new record
@@ -624,7 +613,6 @@
                 console.error(err);
             } finally {
                 // Remove the popup and update the GeoJSON data with the new point
-                popup.remove();
                 geojson.features.push({
                     'type': 'Feature',
                     'properties': {
@@ -633,15 +621,30 @@
                     },
                     'geometry': {
                         'type': 'Point',
-                        'coordinates': [lngLat.lng, lngLat.lat]
+                        'coordinates': [markerLngLat.lng, markerLngLat.lat]
                     }
                 });
                 map.getSource('places').setData(geojson);
             }
         }
 
- 
+        // Add event listener to the share button
+        document.getElementById('share').addEventListener('click', function() {
+            // Check if a marker exists before calling shareNewRecord
+            if (marker) {
+                let markerLngLat = marker.getLngLat(); // Get the marker's coordinates before removing it
+                // Call shareNewRecord with the marker's coordinates
+                shareNewRecord(markerLngLat);
+                // Reset the marker variable
+                marker.remove();
+                marker = null;
+            } else {
+                alert("Please click on the map to add a marker before sharing.");
+            }
+        });
 
+
+ 
     </script>
 
 </body>

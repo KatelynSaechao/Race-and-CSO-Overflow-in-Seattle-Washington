@@ -7,6 +7,9 @@
     <link href="https://unpkg.com/maplibre-gl@3.1.0/dist/maplibre-gl.css" rel="stylesheet" />
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@800&display=swap" rel="stylesheet">
     <!-- Styles for the map and popup -->
     <style>
         /* Basic CSS for the page */
@@ -14,6 +17,14 @@
             margin: 0;
             padding: 0;
         }
+
+        .outfit-bold {
+            font-family: "Outfit", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 800;
+            font-style: normal;
+            }
+
 
         #map {
             position: absolute;
@@ -28,13 +39,14 @@
             left: 20px;
             width: 350px;
             border-radius: 5px;
-            font-family: Helvetica, Helvetica, sans-serif;
+            font-family: "Outfit", "Outfit", sans-serif;
             font-size: 20px;
             line-height: 1.5;
             color: #000000;
             z-index: 1;
         }
-        
+
+
         #name {
             width: 100%;
             height: 20px;
@@ -54,6 +66,7 @@
         .overlay-trigger--info {
             right: 100px;
             top: 30px;
+            font-family: "Outfit", "Outfit", sans-serif;
         }
 
         
@@ -65,13 +78,10 @@
             height: 100%;
             background-color: #9C95C5;
             opacity: 0.75;
-            font-family: Helvetica, Helvetica, sans-serif;
+            font-family: "Outfit", "Outfit", sans-serif;
             font-size: 20px;
             transition: right 0.3s ease;
             overflow-y: auto;
-            z-index: 5;
-            color: white;
-            padding: 20px;
         }
 
         .overlay--info.active {
@@ -104,7 +114,7 @@
             height: 100%;
             background-color: #9C95C5;
             opacity: 0.75;
-            font-family: Helvetica, sans-serif;
+            font-family: "Outfit", sans-serif;
             font-size: 20px;
             transition: right 0.3s ease;
             overflow-y: auto;
@@ -168,17 +178,17 @@
         }
 
         #overlay {
-        position: fixed;
-        top: 0;
-        right: -300px; /* Start offscreen */
-        width: 300px;
-        height: 100%;
-        background-color: #9C95C5;
-        opacity: 0.75;
-        font-family: Helvetica, Helvetica, sans-serif;
-        font-size: 20px;
-        transition: right 0.3s ease;
-        overflow-y: auto;
+            position: fixed;
+            top: 0;
+            right: -400px; /* Start offscreen */
+            width: 340px;
+            height: 100%;
+            background-color: #9C95C5;
+            opacity: 0.75;
+            font-family: "Outfit", "Outfit", sans-serif;
+            font-size: 20px;
+            transition: right 0.3s ease;
+            overflow-y: auto;
         }
 
         #overlayContent {
@@ -205,7 +215,7 @@
             width: 140px;
             height: 160px;
             border: 1px solid rgba(0, 0, 0, 0.4);
-            font-family: 'Open Sans', sans-serif;
+            font-family: "Outfit", "Outfit", sans-serif;
             text-align: center;
         }
 
@@ -266,13 +276,13 @@
     <div id="map"></div>
 
     <!-- Map layer toggle -->
-    <div id="toggle-menu"><p><b>Toggle Layers</b></p></div>
+    <div id="toggle-menu"><p><b>MAP LAYERS</b></p></div>
     <div id="menu"></div>
     
     <!-- Information box -->
     <div id="info">
-        <h3>Race and Overflow in Seattle, Washington</h3>
-        <h4>Group AB3 | Mykenzie Hirata, Lizeth Velderrain-Lopez, & Katelyn Saechao</h4>
+        <h3>RACE AND CSO OVERFLOW IN SEATTLE, WASHINGTON</h3>
+        <h5>Group AB3 | Mykenzie Hirata, Lizeth Velderrain-Lopez, & Katelyn Saechao</h5>
 
     </div>
     
@@ -301,7 +311,7 @@
         <button class="close-button" onclick="hideInfoOverlay()">X</button>
         <div id="overlayContent">
             <!-- Add your info content here -->
-            <h2>About/Info</h2>
+            <h2>ABOUT/INFO PLACEHOLDER</h2>
             <p>INSERT TEXT HERE. EXPLAIN PURPOSE OF MAP. LEGEND. CITATION</p>
         </div>
     </div>

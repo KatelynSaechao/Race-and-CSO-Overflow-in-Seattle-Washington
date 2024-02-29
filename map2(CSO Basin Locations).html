@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>CSO Basins and Race in Seattle</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script>
+        mapboxgl.accessToken =
+            'pk.eyJ1IjoiamFrb2J6aGFvIiwiYSI6ImNpcms2YWsyMzAwMmtmbG5icTFxZ3ZkdncifQ.P9MBej1xacybKcDN_jehvw';
+        let map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/light-v10',
+            zoom: 10.3,
+            minZoom: 3,
+            center: [-122.3, 47.62],
+        });
+    
+
+        const grades = [5, 15, 20, 40],
+        colors = ['rgb(255, 207, 76)', 'rgb(120, 198, 121)', 'rgb(1, 108, 89)', 'rgb(0, 104, 55)'],
+        radii = [5, 15, 20, 25];
+        
+        async function geojsonFetch() { 
+            let response = await fetch('assets/poc-data.geojson');
+            let pocdata = await response.json();
+            map.on('load', function loadingData() {
+
+                map.addSource('cso-basins', {
+                    type: 'geojson',
+                    data: 'assets/cso-basins.geojson'
+                });
+
+
+                map.addLayer({
+                    'id': 'cso-basin-layer',
+                    'type': 'fill',
+                    'paint' : {
+                        'fill-color': '#6FAED8',
+                        'fill-outline-color': '#ffffff',
+                        'fill-opacity': 0.7,
+                    },
+                    'source': 'cso-basins',
+                });
+            });
+        }
+        geojsonFetch();
+    </script>
+
+</body>
+
+</html>

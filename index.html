@@ -13,6 +13,15 @@
     <!-- Styles for the map and popup -->
     <style>
         /* Basic CSS for the page */
+        h3 {
+            line-height: 1;
+            font-size: 26px;
+        }
+
+        h5 {
+            line-height: 1; 
+        }
+
         body {
             margin: 0;
             padding: 0;
@@ -32,15 +41,49 @@
             bottom: 0;
             width: 100%;
         }
+
+        .map-overlay {
+            position: absolute;
+            bottom: 190px;
+            left: 0;
+            background: rgba(255, 255, 255, 0.8);
+            border-style: solid;
+            border-width: 1px;
+            border-color: rgba(0, 0, 0, 0.2);
+            margin-left: 20px;
+            font-family: Arial, sans-serif;
+            overflow: auto;
+            border-radius: 3px;
+            display: none;
+        }
+
+
+        #legend {
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            line-height: 18px;
+            height: 175px;
+            margin-bottom: 40px;
+            width: 275px;
+        }
+
+        .legend-key {
+            display: inline-block;
+            border-radius: 20%;
+            width: 10px;
+            height: 10px;
+            margin-right: 5px;
+        }
         
-        #info {
+        #subtitle {
             position: absolute;
             top: 0;
             left: 20px;
             width: 350px;
             border-radius: 5px;
             font-family: "Outfit", "Outfit", sans-serif;
-            font-size: 20px;
+            font-size: 18px;
             line-height: 1.5;
             color: #000000;
             z-index: 1;
@@ -55,33 +98,22 @@
 
         #content {
             width: 100%;
-            height: 45px;
+            height: 125px;
             margin-bottom: 10px;
         }
 
         #share {
-            float: right;
+            margin-left: 130px;
+            background-color: #8767B0;
+            border: none;
+            color:#ffffff;
+            height: 30px;
         }
 
         .overlay-trigger--info {
             right: 100px;
-            top: 30px;
+            top: 20px;
             font-family: "Outfit", "Outfit", sans-serif;
-        }
-
-        
-        .overlay.overlay--info {
-            position: fixed;
-            top: 0;
-            right: -300px; /* Start offscreen */
-            width: 300px;
-            height: 100%;
-            background-color: #9C95C5;
-            opacity: 0.75;
-            font-family: "Outfit", "Outfit", sans-serif;
-            font-size: 20px;
-            transition: right 0.3s ease;
-            overflow-y: auto;
         }
 
         .overlay--info.active {
@@ -100,27 +132,26 @@
 
         .overlay-trigger.overlay-trigger--info {
             position: absolute;
-            right: 110px;
+            right: 90px;
             top: 30px;
             z-index: 2; /* Ensure the button is above the overlay */
-            font-size: 25px;
+            font-size: 20px;
         }
 
         .overlay.overlay--info {
             position: fixed;
             top: 0;
             right: -400px; /* Start offscreen */
-            width: 300px;
+            width: 340px;
             height: 100%;
             background-color: #9C95C5;
             opacity: 0.75;
-            font-family: "Outfit", sans-serif;
+            font-family: "Outfit", "Outfit", sans-serif;
             font-size: 20px;
             transition: right 0.3s ease;
             overflow-y: auto;
             z-index: 1; /* Ensure the overlay is below the button */
             color: white;
-            padding: 20px;
         }
 
         .overlay--info.active {
@@ -143,12 +174,10 @@
             right:10px;
             top: 10px;
         }
+
         .overlay-trigger {
             border: none;
             background-color: transparent;
-            padding: 0;
-            top: 0;
-            font-size: 2.4em;
             cursor: pointer;
             font-weight: 700;
             position: fixed;
@@ -157,8 +186,8 @@
         }
 
         .overlay-trigger__icon {
-            width: 75px;
-            height: 75px; 
+            width: 60px;
+            height: 60px; 
         }
 
         .overlay.overlay--visible {
@@ -166,7 +195,6 @@
         }
 
         .overlay.overlay--active {
-            transition-property: width;
             transition-duration: 300ms;
             transition-timing-function: ease;
             display: block;
@@ -189,11 +217,12 @@
             font-size: 20px;
             transition: right 0.3s ease;
             overflow-y: auto;
+            z-index: 1; 
         }
 
         #overlayContent {
-        padding: 20px;
-        color: white;
+            padding: 20px;
+            color: white;
         }
 
         .close-button {
@@ -238,8 +267,6 @@
             font-size: 13px;
             color: #404040;
             display: block;
-            margin: 0;
-            padding: 0;
             padding: 10px;
             text-decoration: none;
             border-bottom: 1px solid rgba(0, 0, 0, 0.25);
@@ -258,12 +285,12 @@
         }
 
         #menu a.active {
-            background-color: #3887be;
+            background-color: #9C95C5;
             color: #ffffff;
         }
 
         #menu a.active:hover {
-            background: #3074a4;
+            background: #857cb9;
         }
 
 
@@ -280,7 +307,7 @@
     <div id="menu"></div>
     
     <!-- Information box -->
-    <div id="info">
+    <div id="subtitle">
         <h3>RACE AND CSO OVERFLOW IN SEATTLE, WASHINGTON</h3>
         <h5>Group AB3 | Mykenzie Hirata, Lizeth Velderrain-Lopez, & Katelyn Saechao</h5>
 
@@ -295,11 +322,11 @@
     <div id="overlay">
         <button class="close-button" onclick="hideOverlay()">X</button>
         <div id="overlayContent">
-          <h2>How to contribute to the map</h2>
+          <h2>HOW TO CONTRIBUTE TO THE MAP</h2>
           <p>1. Click on the location of your experience.</p>
           <p>2. Share your experience and thoughts in the text box below.</p>
           <p>3. Click the ‘Share’ button.</p>
-          <div id= "fields"><input type="text" id="name" placeholder="Input your name here..."><input type="text" id="content" placeholder="Input your message here..."><button id="share">Share</button></div>
+          <div id= "fields"><input type="text" id="content"><button id="share"><b>Share</b></button></div>
         </div>
       </div>
     
@@ -316,6 +343,7 @@
         </div>
     </div>
 
+    <div class='map-overlay' id='legend'></div>
 
     <!-- JavaScript code for the interactive map and data submission -->
     <script>
@@ -408,7 +436,7 @@
                 });
 
                 map.addLayer({
-                    'id': 'CSO Points',
+                    'id': 'CSO Overflow',
                     'type': 'circle',
                     'layout': {
                         'visibility': 'none'
@@ -447,12 +475,12 @@
         // After the last frame rendered before the map enters an "idle" state.
         map.on('idle', () => {
             // If these two layers were not added to the map, abort
-            if (!map.getLayer('POC') || !map.getLayer('CSO Basin') || !map.getLayer('CSO Points')) {
+            if (!map.getLayer('POC') || !map.getLayer('CSO Basin') || !map.getLayer('CSO Overflow')) {
                 return;
             }
 
             // Enumerate ids of the layers.
-            const toggleableLayerIds = ['POC', 'CSO Basin', 'CSO Points'];
+            const toggleableLayerIds = ['POC', 'CSO Basin', 'CSO Overflow'];
 
             // Set up the corresponding toggle button for each layer.
             for (const id of toggleableLayerIds) {
@@ -512,6 +540,7 @@
         const nav = new mapboxgl.NavigationControl({
             showZoom: true, showCompass: false
         });
+        
         map.addControl(nav, 'bottom-right');
 
         // Fetch existing records when the window is loaded
@@ -527,7 +556,6 @@
                 geojson.features.push({
                     'type': 'Feature',
                     'properties': {
-                        'contributor': data.rows[i].contributor,
                         'content': data.rows[i].content,
                     },
                     'geometry': {
@@ -618,34 +646,28 @@
             document.getElementById('anotherOverlay').style.display = 'block';
         }
 
-
-        const poc_popup = new maplibregl.Popup({
-        });
-
         map.on('mousemove', 'POC', function (e) {
             map.getCanvas().style.cursor = 'pointer';
 
             var tract = e.features[0];
             var poc_perc = (100 * (tract.properties.POC_TOTAL / tract.properties.TOTAL_POP));
             var rounded_poc_perc = poc_perc.toFixed(2); 
-            var census_name = tract.properties.NAME
+            var census_name = tract.properties.NAME;
 
     
-            poc_popup.setLngLat(e.lngLat)
-                .setHTML(
-                    "<p>" + census_name + "</p>" +
-                    "<p>" + "POC percentage: " + rounded_poc_perc + "%" + "</p>")
-                .addTo(map);
+            var legendContent = `
+                <p><b>Percent of People of Color</b><p>
+                <p><b>${census_name}</b></p>
+                <b>${rounded_poc_perc}% POC</b></p>
+            `;
+            showlegendOverlay('POC', legendContent);
+
         });
 
         map.on('mouseleave', 'POC', function () {
-            map.getCanvas().style.cursor = '';
-            // Remove the popup when the mouse leaves the feature
-            poc_popup.remove();
+            hidelegendOverlay();
         });
 
-        const basin_popup = new maplibregl.Popup({
-        });
 
         map.on('mousemove', 'CSO Basin', function (e) {
             map.getCanvas().style.cursor = 'pointer';
@@ -656,43 +678,37 @@
             var rounded_acre= basin_acre.toFixed(3);
 
     
-            basin_popup.setLngLat(e.lngLat)
-                .setHTML(
-                    "<p>" + "CSO Basin Outflow Location: " + basin_loc + "</p>" +
-                    "<p>" + "Acres: " + rounded_acre + "</p>")
-                .addTo(map);
+            var legendContent = `
+                <p><b>CSO Basin</b><p>
+                <p><b>Location:</b> ${basin_loc}</p>
+                <b>${rounded_acre} Acres</b></p>
+            `;
+            showlegendOverlay('CSO Basin', legendContent);
         });
 
         map.on('mouseleave', 'CSO Basin', function () {
-            map.getCanvas().style.cursor = '';
-            // Remove the popup when the mouse leaves the feature
-            basin_popup.remove();
+            hidelegendOverlay();
         });
 
-        const overflow_popup = new maplibregl.Popup({
-        });
 
-        map.on('mousemove', 'CSO Points', function (e) {
-            map.getCanvas().style.cursor = 'pointer';
-
+        map.on('mousemove', 'CSO Overflow', function (e) {
             var overflow = e.features[0];
             var overflow_loc = overflow.properties.CSOB_OUTFALL_LOC_TEXT;
             var overflow_vol = overflow.properties.CSOB_OVRFLW_VOL_MGAL_YR_NBR;
             var overflow_freq = overflow.properties.CSOB_OVRFLW_YR_FRQ_NBR;
 
-            overflow_popup.setLngLat(e.lngLat)
-                .setHTML(
-                    "<p>" + "CSO Basin Outflow Location: " + overflow_loc + "</p>" +
-                    "<p>" + "Overflow Volume per Year: " + overflow_vol + "</p>" +
-                    "<p>" + "Overflow Frequency per Year: " + overflow_freq + "</p>")
-                .addTo(map);
+            var legendContent = `
+                <p><b>CSO Overflow</b><p>
+                <p><b>Location:</b> ${overflow_loc}</p>
+                <b>Overflow Volume per Year:</b> ${overflow_vol} Million Gallons</p>
+            `;
+            showlegendOverlay('CSO Overflow', legendContent);
         });
 
-        map.on('mouseleave', 'CSO Points', function () {
-            map.getCanvas().style.cursor = '';
-            // Remove the popup when the mouse leaves the feature
-            overflow_popup.remove();
+        map.on('mouseleave', 'CSO Overflow', function () {
+            hidelegendOverlay();
         });
+
 
          // Show popup on mouse enter over an existing point
          map.on('mouseenter', 'placesLayer', function (e) {
@@ -700,11 +716,10 @@
 
             var coordinates = e.features[0].geometry.coordinates;
             var content = e.features[0].properties.content;
-            var contributor = e.features[0].properties.contributor;
 
             popup = new maplibregl.Popup()
                 .setLngLat(coordinates)
-                .setHTML("<p><b>" + contributor + "</b> <i>said:</i> " + content + "</p>")
+                .setHTML('"' + content + '"')
                 .addTo(map);
         });
 
@@ -714,16 +729,25 @@
             popup.remove();
         });
 
+        function showlegendOverlay(layerId, content) {
+            var overlayDiv = document.getElementById('legend');
+            overlayDiv.innerHTML = content;
+            overlayDiv.style.display = 'block';
+        }
+
+        function hidelegendOverlay() {
+            var overlayDiv = document.getElementById('legend');
+            overlayDiv.innerHTML = '';
+            overlayDiv.style.display = 'none';
+        }
 
         // Function to handle the submission of a new record
         async function shareNewRecord(markerLngLat) {
-            let contributor = document.getElementById('name').value;
             let content = document.getElementById('content').value;
             let lngLat = marker.getLngLat();
 
             // Create a new URLSearchParams object and append the data to it
             let newRecord = new URLSearchParams();
-            newRecord.append('contributor', contributor);
             newRecord.append('content', content);
             newRecord.append('lng', markerLngLat.lng);
             newRecord.append('lat', markerLngLat.lat);
@@ -745,7 +769,6 @@
                 geojson.features.push({
                     'type': 'Feature',
                     'properties': {
-                        'contributor': contributor,
                         'content': content,
                     },
                     'geometry': {

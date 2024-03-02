@@ -76,6 +76,11 @@
             margin-right: 5px;
         }
         
+        #legend-image {
+            width: 200px;
+            height: auto;
+        }
+
         #subtitle {
             position: absolute;
             top: 0;
@@ -89,7 +94,6 @@
             z-index: 1;
         }
 
-
         #name {
             width: 100%;
             height: 20px;
@@ -99,7 +103,7 @@
         #content {
             width: 100%;
             height: 125px;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
 
         #share {
@@ -114,6 +118,7 @@
             right: 100px;
             top: 20px;
             font-family: "Outfit", "Outfit", sans-serif;
+            background-color: transparent;
         }
 
         .overlay--info.active {
@@ -144,8 +149,7 @@
             right: -400px; /* Start offscreen */
             width: 340px;
             height: 100%;
-            background-color: #9C95C5;
-            opacity: 0.75;
+            background-color: rgba(156, 149, 197, 0.75);
             font-family: "Outfit", "Outfit", sans-serif;
             font-size: 20px;
             transition: right 0.3s ease;
@@ -177,17 +181,17 @@
 
         .overlay-trigger {
             border: none;
-            background-color: transparent;
             cursor: pointer;
             font-weight: 700;
             position: fixed;
             z-index: 5;
-            color: #1a1a1a;
+            background-color: transparent;
         }
 
         .overlay-trigger__icon {
             width: 60px;
             height: 60px; 
+            
         }
 
         .overlay.overlay--visible {
@@ -211,8 +215,7 @@
             right: -400px; /* Start offscreen */
             width: 340px;
             height: 100%;
-            background-color: #9C95C5;
-            opacity: 0.75;
+            background-color: rgba(156, 149, 197, 0.75);
             font-family: "Outfit", "Outfit", sans-serif;
             font-size: 20px;
             transition: right 0.3s ease;
@@ -293,7 +296,9 @@
             background: #857cb9;
         }
 
-
+        .mapboxgl-ctrl-bottom-right {
+            z-index: 0; /* Decrease z-index to appear below the overlay */
+        }
   
     </style>
 </head>
@@ -350,8 +355,8 @@
                 <li>CSO Overflow - Displays</li>
             </ul>
             <h2>LEGENDS</h2>
-
-            <img src="https://github.com/mykenzieh03/GEOG_458_Final_Project/blob/fa3a8ebf988118a660e912842eee8f3f72ec38d2/img/cso_layer_legend.png" alt="CSO Layers Legend">
+            <img id="legend-image" src="https://github.com/mykenzieh03/GEOG_458_Final_Project/blob/main/img/poc_layer_legend.png?raw=true" alt="POC Layer Legend">
+            <img id="legend-image" src="https://github.com/mykenzieh03/GEOG_458_Final_Project/blob/main/img/cso_layer_legend.png?raw=true" alt="CSO Layers Legend">
             <h2>CREDIT</h2>
             <p>Map created by Mykenzie Hirata, Lizeth Velderrain-Lopez, 
                 & Katelyn Saechao</p>
@@ -362,7 +367,8 @@
             <a href="https://data-seattlecitygis.opendata.arcgis.com/datasets/a3deea5b34d44e3baad6200db4ac8c39_0/explore">Race by Age Groups (B01001A-I)(Seattle GeoData)</a>
 
             <h2>CITATIONS</h2>
-            <p>Combined sewer overflow status - King County, Washington, https://www.kingcounty.gov/en/dept/dnrp/waste-services/wastewater-treatment/sewer-system-services/cso-status.</p>
+            <p>Combined sewer overflow status - King County, Washington, https://www.kingcounty.gov/
+                en/dept/dnrp/waste-services/wastewater-treatment/sewer-system-services/cso-status.</p>
         </div>
     </div>
 
@@ -740,7 +746,7 @@
             var coordinates = e.features[0].geometry.coordinates;
             var content = e.features[0].properties.content;
 
-            popup = new maplibregl.Popup()
+            popup = new maplibregl.Popup({closeButton: false})
                 .setLngLat(coordinates)
                 .setHTML('"' + content + '"')
                 .addTo(map);
@@ -763,6 +769,7 @@
             overlayDiv.innerHTML = '';
             overlayDiv.style.display = 'none';
         }
+
 
         // Function to handle the submission of a new record
         async function shareNewRecord(markerLngLat) {

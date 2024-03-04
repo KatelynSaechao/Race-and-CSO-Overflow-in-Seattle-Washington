@@ -366,7 +366,7 @@
         
         async function geojsonFetch() { 
             let response = await fetch('assets/poc-data.geojson');
-            let pocdata = await response.json();
+            let data = await response.json();
             map.on('load', function loadingData() {
 
                 map.addSource('cso-basins', {
@@ -381,7 +381,7 @@
 
                 map.addSource('race-data', {
                     type: 'geojson',
-                    data: pocdata
+                    data: 'assets/poc-perc-data.geojson'
                 });
 
                 
@@ -395,17 +395,17 @@
                     'paint': {
                         'fill-color': [
                             'step',
-                            ['get', 'POC_TOTAL'],
+                            ['get', 'POC_PERC'],
                             '#f2f0f7',
-                            500,
+                            20.5,
                             '#dadaeb',
-                            1000,
+                            27,
                             '#bcbddc',
-                            1500,
+                            33.5,
                             '#9e9ac8',
-                            2000,
+                            44.2,
                             '#756bb1',
-                            2500,
+                            53.9,
                             '#54278f'
                         ],
                         'fill-outline-color': '#969696',

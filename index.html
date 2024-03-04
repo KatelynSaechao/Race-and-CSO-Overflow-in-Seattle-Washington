@@ -28,15 +28,36 @@
             font-optical-sizing: auto;
             font-weight: 800;
             font-style: normal;
-            }
+        }
 
-        #subtitle {
+
+        .outfit-regular {
+            font-family: "Outfit-regular", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        #title {
             position: absolute;
             top: 0;
             left: 20px;
             width: 350px;
             border-radius: 5px;
             font-family: "Outfit", "Outfit", sans-serif;
+            font-size: 18px;
+            line-height: 1.5;
+            color: #000000;
+            z-index: 1;
+        }   
+
+        #subtitle {
+            position: absolute;
+            top: 60px;
+            left: 20px;
+            width: 350px;
+            border-radius: 5px;
+            font-family: "Outfit-regular", "Outfit-regular", sans-serif;
             font-size: 18px;
             line-height: 1.5;
             color: #000000;
@@ -127,12 +148,16 @@
             width: 340px;
             height: 100%;
             background-color: rgba(156, 149, 197, 0.75);
-            font-family: "Outfit", "Outfit", sans-serif;
+            font-family: "Outfit", sans-serif;
             font-size: 20px;
             transition: right 0.3s ease;
             overflow-y: auto;
             z-index: 1; /* Ensure the overlay is below the button */
             color: white;
+        }
+
+        .overlay.about-info-content-reg {
+            font-family: "Outfit-regular", sans-serif;
         }
 
         .about-info-content.active {
@@ -169,7 +194,6 @@
         .add-comment-content.active {
             right: 0; /* Bring the overlay into view */
         }
-
 
 
         /*Style for aspects of general overlay*/
@@ -262,7 +286,6 @@
         .mapboxgl-ctrl-bottom-right {
             z-index: 0;
         }
-  
     </style>
 </head>
 
@@ -275,10 +298,11 @@
     <div id="menu"></div>
     
     <!-- Information box -->
-    <div id="subtitle">
+    <div id="title">
         <h3>RACE AND CSO OVERFLOW IN SEATTLE, WASHINGTON</h3>
+    </div>
+    <div id="subtitle">
         <h5>Group AB3 | Mykenzie Hirata, Lizeth Velderrain-Lopez, & Katelyn Saechao</h5>
-
     </div>
     
     <!-- Add comment button -->
@@ -290,10 +314,12 @@
     <div id="commentOverlay" class="overlay add-comment-content">
         <button class="close-button" onclick="hideOverlay()">X</button>
         <div id="overlayContent">
-          <h2>HOW TO CONTRIBUTE TO THE MAP</h2>
-          <p>1. Click on the location of your experience.</p>
-          <p>2. Share your experience and thoughts in the text box below.</p>
-          <p>3. Click the ‘Share’ button.</p>
+            <h2>HOW TO CONTRIBUTE TO THE MAP</h2>
+            <div class="overlay about-info-content-reg">
+                <p>1. Click on the location of your experience.</p>
+                <p>2. Share your experience and thoughts in the text box below.</p>
+                <p>3. Click the ‘Share’ button.</p>
+            </div>
           <div id= "fields"><input type="text" id="content"><button id="share"><b>Share</b></button></div>
         </div>
       </div>
@@ -307,31 +333,62 @@
         <div id="overlayContent">
             <!-- Add your info content here -->
             <h2>PURPOSE OF THE MAP</h2>
-            <p>The purpose of the map is to</p>
+            <div class="overlay about-info-content-reg">
+                <p>The purpose of the map is to compare race in relation to CSO overflow volumes
+                    within the Seattle area. This map serves as a participatory map and allows for
+                    users to add their own comments and experiences regarding living or being near
+                    places where CSO basins are located or places where CSO overflowing occurs.
+                </p>
+            </div>
+            
+            
             <h2>HOW TO USE THE MAP</h2>
-            <p>To toggle between the layers, click on any of the buttons
-                under the "MAP LAYERS" section in the bottom left hand corner.
+            <div class="overlay about-info-content-reg">
+                <p>To toggle between the layers, click on any of the buttons
+                    under the "MAP LAYERS" section in the bottom left hand corner. Multiple layers
+                    can be selected at once. Hover over the features in each layer. Additionally, you can
+                    scroll down to view the legend.
+                </p>  
+            </div>
+            <p>NOTE: ONLY THE INFORMATION FROM THE TOP MOST LAYER YOU ARE HOVERING OVER WILL APPEAR.
             </p>
-            <ul>
-                <li>POC - Displays </li>
-                <li>CSO Basin - Displays </li>
-                <li>CSO Overflow - Displays</li>
-            </ul>
+            <div class="overlay about-info-content-reg">
+                <ul>
+                    <li>POC - Displays a choropleth map of the percent of people of color per census tract </li>
+                    <li>CSO Basin - Displays a geometric layer of the location of CSO basins</li>
+                    <li>CSO Overflow - Displays a proportional symbols map of the CSO overflow volume for each CSO basin</li>
+                </ul>
+                <p>To contribute to the map:</p>
+                <p>1. Click on the location of your experience.</p>
+                <p>2. Click on the chat button icon in the top right corner of the screen.</p>
+                <p>3. Write about your experiences and thoughts in the text box.</p>
+                <p>4. Click the ‘Share’ button.</p>
+            </div>
+
             <h2>LEGENDS</h2>
-            <img id="legend-image" src="https://github.com/mykenzieh03/GEOG_458_Final_Project/blob/main/img/poc_layer_legend.png?raw=true" alt="POC Layer Legend">
+            <div class="overlay about-info-content-reg">
+            <img id="legend-image" src="https://github.com/mykenzieh03/GEOG_458_Final_Project/blob/main/img/poc-layer-legend.png?raw=true" alt="POC Layer Legend">
             <img id="legend-image" src="https://github.com/mykenzieh03/GEOG_458_Final_Project/blob/main/img/cso_layer_legend.png?raw=true" alt="CSO Layers Legend">
+            </div>
+
             <h2>CREDIT</h2>
+            <div class="overlay about-info-content-reg">
             <p>Map created by Mykenzie Hirata, Lizeth Velderrain-Lopez, 
                 & Katelyn Saechao</p>
+            </div>
 
             <h2>DATA SOURCES</h2>
+            <div class="overlay about-info-content-reg">
             <a href="https://data-seattlecitygis.opendata.arcgis.com/datasets/deb3e78249bf41b48a2f53efdb6f704f_0/explore?location=47.597238%2C-122.330350%2C12.00">CSO Basins (Seattle GeoData)</a>
             <p></p>
             <a href="https://data-seattlecitygis.opendata.arcgis.com/datasets/a3deea5b34d44e3baad6200db4ac8c39_0/explore">Race by Age Groups (B01001A-I)(Seattle GeoData)</a>
+            </div>
 
             <h2>CITATIONS</h2>
-            <p>Combined sewer overflow status - King County, Washington, https://www.kingcounty.gov/
-                en/dept/dnrp/waste-services/wastewater-treatment/sewer-system-services/cso-status.</p>
+            <div class="overlay about-info-content-reg">
+                <p>Combined sewer overflow status - King County, Washington, https://www.kingcounty.gov/
+                    en/dept/dnrp/waste-services/wastewater-treatment/sewer-system-services/cso-status.</p>
+            </div>
         </div>
     </div>
 

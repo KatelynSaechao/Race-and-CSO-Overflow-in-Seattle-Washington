@@ -346,7 +346,7 @@
             <div class="overlay about-info-content-reg">
                 <p>To toggle between the layers, click on any of the buttons
                     under the "MAP LAYERS" section in the bottom left hand corner. Multiple layers
-                    can be selected at once. Hover over the features in each layer. Additionally, you can
+                    can be selected at once. Hover over the features in each layer to view more information. Additionally, you can
                     scroll down to view the legend.
                 </p>  
             </div>
@@ -830,6 +830,8 @@
             }
         }
 
+        const textArea = document.getElementById('content');
+
         // Add event listener to the share button
         document.getElementById('share').addEventListener('click', function() {
             // Check if a marker exists before calling shareNewRecord
@@ -840,6 +842,11 @@
                 // Reset the marker variable
                 marker.remove();
                 marker = null;
+                textArea.value = "";
+                hideOverlay();
+            }
+            else {
+                alert("Please click a point on the map to share!")
             }
         });
 

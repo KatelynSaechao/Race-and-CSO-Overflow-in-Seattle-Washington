@@ -1,5 +1,8 @@
 # GEOG_458_Final_Project
 
+
+[Race and Overflow in Seattle, WA](https://mykenzieh03.github.io/GEOG_458_Final_Project/)
+
 #### Project Idea and Project Significance
 For the final project, our project idea is to examine the relationship between Combined Sewer Overflow (CSO) basin locations and their overflow volume in comparison to the percentage of people of color within Seattle, Washington. As defined by Danielle Rhea in “What are Combined Sewer Overflows?”, CSO Basins are areas where combined sewer systems exceed the stormwater capacity and overflow into the surrounding bodies of water. This can pose significant issues as it can pollute nearby waters, which is both harmful to people and the environment. Additionally, this map is relatively simple and is a participatory map, which can pose problems as people may draw conclusions without performing external research. There may also be problems regarding the content that people contribute, since it may be difficult to moderate submissions.
 
@@ -26,8 +29,6 @@ An existing project that we would like to learn from would be the Proximity to C
 
 ![Inspiration map](https://github.com/mykenzieh03/GEOG_458_Final_Project/blob/3e12a7f68c07fffc448142dfad2cd0aa89e352a4/img/inspirationmap.jpeg)
 
-
-[Race and Overflow in Seattle, WA](https://mykenzieh03.github.io/GEOG_458_Final_Project/)
 
 #### Timeline
 *Week 8*

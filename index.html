@@ -104,6 +104,33 @@
             border-radius: 3px;
             display: none;
         }
+
+
+        /*Style for hover legend (multiple layers*/
+        #multiple-legend-overlay {
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            line-height: 18px;
+            height: 400px;
+            margin-bottom: 40px;
+            width: 275px;
+        }
+
+        .multiple-legend-overlay-content {
+            position: absolute;
+            bottom: 50px;
+            right: 0;
+            background: rgba(255, 255, 255, 0.8);
+            border-style: solid;
+            border-width: 1px;
+            border-color: rgba(0, 0, 0, 0.2);
+            margin-left: 20px;
+            font-family: Arial, sans-serif;
+            overflow: auto;
+            border-radius: 3px;
+            display: none;
+        }
         
         /*Style for About/Info legends*/
         #legend-image {
@@ -386,13 +413,27 @@
 
             <h2>CITATIONS</h2>
             <div class="overlay about-info-content-reg">
-                <p>Combined sewer overflow status - King County, Washington, https://www.kingcounty.gov/
-                    en/dept/dnrp/waste-services/wastewater-treatment/sewer-system-services/cso-status.</p>
+                <p>Combined sewer overflow status - King County, Washington, https://www.kingcounty.gov
+                    /en/dept/dnrp/waste-services/wastewater-treatment/sewer-system-services/cso-status.</p>
+                <p>Combined Sewer Overflows and Clean Water Goals: Recommendations from the Government
+                     Accountability Office to Track and Accelerate Progress, River Network. https://www.rivernetwork.org/
+                     events/combined-sewer-overflows-and-clean-water-goals-recommendations-from-the-government-accountability-office-to-track-and-accelerate-progress/.</p>
+                <p>ECOSS, 2019. Combined sewer overflow: how stormwater became Puget Sound’s #1 source of pollution.
+                     https://ecoss.org/combined-sewer-overflow-stormwater-pollution-gsi-explainer/.</p>
+                <p>Environmental Justice and Sewage Pollution in Atlanta - Emory Office of Sustainability Initiatives,
+                     2022. https://sustainability.emory.edu/
+                     environmental-justice-and-sewage-pollution-in-atlanta/.</p>
+                <p>MyRWA Testifies on Combined Sewer Overflows, 2023. Mystic River Watershed Association.
+                     https://mysticriver.org/news/2023/
+                     11/6/myrwa-testifies-on-combined-sewer-overflows.</p>
+                <p>US EPA, O., 2023. Combined Sewer Overflow Basics. https://www.epa.gov/npdes/
+                    combined-sewer-overflow-basics.</p>
             </div>
         </div>
     </div>
 
     <div class='legend-overlay-content' id='legend-overlay'></div>
+    <div class='multiple-legend-overlay-content' id='multiple-legend-overlay'></div>
 
     <!-- JavaScript code for the interactive map and data submission -->
     <script>
@@ -789,6 +830,7 @@
             overlayDiv.innerHTML = '';
             overlayDiv.style.display = 'none';
         }
+
 
 
         // Function to handle the submission of a new record

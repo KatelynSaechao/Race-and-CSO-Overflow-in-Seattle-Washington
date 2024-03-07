@@ -105,33 +105,6 @@
             display: none;
         }
 
-
-        /*Style for hover legend (multiple layers*/
-        #multiple-legend-overlay {
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-            line-height: 18px;
-            height: 400px;
-            margin-bottom: 40px;
-            width: 275px;
-        }
-
-        .multiple-legend-overlay-content {
-            position: absolute;
-            bottom: 50px;
-            right: 0;
-            background: rgba(255, 255, 255, 0.8);
-            border-style: solid;
-            border-width: 1px;
-            border-color: rgba(0, 0, 0, 0.2);
-            margin-left: 20px;
-            font-family: Arial, sans-serif;
-            overflow: auto;
-            border-radius: 3px;
-            display: none;
-        }
-        
         /*Style for About/Info legends*/
         #legend-image {
             width: 200px;
@@ -358,7 +331,14 @@
     <div id="infoOverlay" class="overlay about-info-content">
         <button class="close-button" onclick="hideInfoOverlay()">X</button>
         <div id="overlayContent">
-            <!-- Add your info content here -->
+            
+            <h2>LEGENDS</h2>
+            <div class="overlay about-info-content-reg">
+            <img id="legend-image" src="https://github.com/mykenzieh03/GEOG_458_Final_Project/blob/main/img/poc-layer-legend.png?raw=true" alt="POC Layer Legend">
+            <img id="legend-image" src="https://github.com/mykenzieh03/GEOG_458_Final_Project/blob/main/img/cso_layer_legend.png?raw=true" alt="CSO Layers Legend">
+            </div>
+
+
             <h2>PURPOSE OF THE MAP</h2>
             <div class="overlay about-info-content-reg">
                 <p>The purpose of the map is to compare race in relation to CSO overflow volumes
@@ -392,16 +372,17 @@
                 <p>4. Click the ‘Share’ button.</p>
             </div>
 
-            <h2>LEGENDS</h2>
-            <div class="overlay about-info-content-reg">
-            <img id="legend-image" src="https://github.com/mykenzieh03/GEOG_458_Final_Project/blob/main/img/poc-layer-legend.png?raw=true" alt="POC Layer Legend">
-            <img id="legend-image" src="https://github.com/mykenzieh03/GEOG_458_Final_Project/blob/main/img/cso_layer_legend.png?raw=true" alt="CSO Layers Legend">
-            </div>
-
             <h2>CREDIT</h2>
             <div class="overlay about-info-content-reg">
             <p>Map created by Mykenzie Hirata, Lizeth Velderrain-Lopez, 
                 & Katelyn Saechao</p>
+            </div>
+
+            <h2>Acknowledgement</h2>
+            <div class="overlay about-info-content-reg">
+            <p>This map was inspired by the course content in GEOG 458, taught by Professor Bo Zhao. 
+                We would like to thank Bo Zhao and Liz Peng for their feedback and guidance.
+            </p>
             </div>
 
             <h2>CODE TEMPLATES USED</h2>
@@ -440,7 +421,7 @@
     </div>
 
     <div class='legend-overlay-content' id='legend-overlay'></div>
-    <div class='multiple-legend-overlay-content' id='multiple-legend-overlay'></div>
+
 
     <!-- JavaScript code for the interactive map and data submission -->
     <script>

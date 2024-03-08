@@ -44,27 +44,27 @@ places where CSO basins are located or places where CSO overflowing occurs.
 
 ### *Toggling Layers*
 Screenshot
-![Toggling layers function screenshot](img\screenshots\toggle.png)
+![Toggling layers function screenshot](img/screenshots/toggle.png)
 
 Gif
-![Toggling layers function gif](img\gifs\toggle.gif)
+![Toggling layers function gif](img/gifs/toggle.gif)
 
 
 ### *Hovering*
 Screenshot
-![Hovering function screenshot](img\screenshots\hover.png)
+![Hovering function screenshot](img/screenshots/hover.png)
 
 Gif
-![Hovering function gif](img\gifs\hover.gif)
+![Hovering function gif](img/gifs/hover.gif)
 
 
 
 ### *Adding Comments to the Map*
 Screenshot
-![Add comments function screenshot](img\screenshots\adding_comment.png)
+![Add comments function screenshot](img/screenshots/adding_comment.png)
 
 Gif
-![Add comments function gif](img\gifs\add_comment.gif)
+![Add comments function gif](img/gifs/add_comment.gif)
 
 
 # Project Goals

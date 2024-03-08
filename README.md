@@ -7,7 +7,7 @@
 Mykenzie Hirata, Lizeth Velderrain-Lopez, Katelyn Saechao, John Duffy, and Yu Zhimin.
 
 # Group Contributions
-The map was created by Mykenzie Hirata, Lizeth Velderrain-Lopez, Katelyn Saechao.
+The map was created by Mykenzie Hirata, Lizeth Velderrain-Lopez, and Katelyn Saechao.
 
 **Mykenzie's Contributions:**
 * Helping research and gathering data
